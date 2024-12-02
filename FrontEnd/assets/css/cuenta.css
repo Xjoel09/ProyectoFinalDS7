@@ -4,52 +4,37 @@ main {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 h1 {
     font-size: 2rem;
     color: #333;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 section p {
     font-size: 1.2rem;
     color: #666;
     margin: 10px 0;
+    text-align: center;
 }
 
-/* Estilo para el formulario de edición */
-#editForm {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con un poco de transparencia */
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px; /* Ancho máximo del formulario */
-    margin-left: auto; /* Centrar horizontalmente */
-    margin-right: auto; /* Centrar horizontalmente */
+button {
+    display: block;
+    margin: 20px auto;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
-#editForm input {
-    width: 100%; /* Hacer que los campos de entrada ocupen todo el ancho del formulario */
-    padding: 10px;
-    margin: 10px 0; /* Espaciado entre los campos */
-    border: 1px solid #ccc; /* Borde gris claro */
-    border-radius: 4px; /* Bordes redondeados */
-    font-size: 1rem; /* Tamaño de fuente */
-}
-
-#editForm button {
-    background-color: #007bff; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-    border: none; /* Sin borde */
-    padding: 10px; /* Espaciado interno */
-    border-radius: 4px; /* Bordes redondeados */
-    cursor: pointer; /* Cambiar el cursor al pasar el mouse */
-    font-size: 1rem; /* Tamaño de fuente */
-    transition: background-color 0.3s; /* Transición suave para el color de fondo */
-}
-
-#editForm button:hover {
-    background-color: #0056b3; /* Color de fondo al pasar el mouse */
+button:hover {
+    background-color: #0056b3;
 }

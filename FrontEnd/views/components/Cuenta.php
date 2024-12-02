@@ -1,15 +1,14 @@
 <?php
-// Asegurarse de que no haya salida antes de session_start()
-ob_start();
+ob_start(); // Esto es parar evitar salidas antes de iniciar la sesion; "Buffer de salida"
 session_start();
 
 require_once __DIR__ . '/../../../BackEnd/models/user.php';
 require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 
-// Verificar sesión
+// Verificacion de la sesion
 if (!isset($_SESSION['codusuario'])) {
     ob_end_clean(); // Limpiar cualquier salida
-    header('Location: ../login.php');
+    header('Location: ../auth/login.php');
     exit();
 }
 
@@ -32,18 +31,18 @@ class UserController {
     }
 }
 
-// Inicializar variables
+// Iniciar variables para evitar errores
 $user = null;
 $error_message = '';
 
 try {
-    // Crear instancia del controlador
+    // Instancia del controlador
     $controller = new UserController($pdo);
     
-    // Obtener el codusuario del usuario actual
+    // Llamado del usuario actual desde la tabla
     $usuarioId = $_SESSION['codusuario'];
     
-    // Obtener los datos del usuario usando el controlador
+    // Esto es para obtener los datos de usuario desde el controlador
     $userData = $controller->obtenerUsuario($usuarioId);
 
     if ($userData) {
@@ -72,44 +71,17 @@ try {
                 <?php echo htmlspecialchars($error_message); ?>
             </div>
         <?php elseif ($user): ?>
-            <h1>Perfil de Usuario</h1>
+            <h1>Perfil de usuario</h1>
             <p><strong>Usuario:</strong> <?php echo htmlspecialchars($user->getUsuario()); ?></p>
             <p><strong>Nombre:</strong> <?php echo htmlspecialchars($user->getNombre()); ?></p>
             <p><strong>Apellido:</strong> <?php echo htmlspecialchars($user->getApellido()); ?></p>
             <p><strong>Dirección:</strong> <?php echo htmlspecialchars($user->getDireccion()); ?></p>
             <p><strong>Teléfono:</strong> <?php echo htmlspecialchars($user->getTelefono()); ?></p>
             
-            <!-- Botón para editar datos -->
-            <button id="editButton" onclick="toggleEditForm()">Editar Datos</button>
 
-            <!-- Formulario de edición -->
-            <div id="editForm" style="display:none;">
-                <h2>Editar Datos</h2>
-                <form method="POST" action="update_user.php">
-                    <input type="hidden" name="codusuario" value="<?php echo htmlspecialchars($user->getCodUsuario()); ?>">
-                    <div class="form-group">
-                        <label for="usuario">Usuario:</label>
-                        <input type="text" id="usuario" name="usuario" value="<?php echo htmlspecialchars($user->getUsuario()); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($user->getNombre()); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellido">Apellido:</label>
-                        <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($user->getApellido()); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="direccion">Dirección:</label>
-                        <input type="text" id="direccion" name="direccion" value="<?php echo htmlspecialchars($user->getDireccion()); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">Teléfono:</label>
-                        <input type="text" id="telefono" name="telefono" value="<?php echo htmlspecialchars($user->getTelefono()); ?>" required>
-                    </div>
-                    <button type="submit">Guardar Cambios</button>
-                </form>
-            </div>
+            <form method="POST" action="../auth/logout.php">
+                <button type="submit">Cerrar Sesión</button>
+            </form>
         <?php endif; ?>
     </section>
 </main>
