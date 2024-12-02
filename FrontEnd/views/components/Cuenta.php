@@ -77,11 +77,6 @@ try {
             <p><strong>Apellido:</strong> <?php echo htmlspecialchars($user->getApellido()); ?></p>
             <p><strong>Dirección:</strong> <?php echo htmlspecialchars($user->getDireccion()); ?></p>
             <p><strong>Teléfono:</strong> <?php echo htmlspecialchars($user->getTelefono()); ?></p>
-            
-
-            <form method="POST" action="../auth/logout.php">
-                <button type="submit">Cerrar Sesión</button>
-            </form>
         <?php endif; ?>
     </section>
 </main>
