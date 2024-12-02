@@ -28,6 +28,14 @@ switch ($url) {
       $tituloPagina = 'Carrito De Compras'; 
         include 'FrontEnd/views/components/CarritoCompras.php';
         break;
+    case 'login':
+      $tituloPagina = 'Login'; 
+        include 'FrontEnd/views/auth/login.php';
+        break;
+    case 'logout':
+      $tituloPagina = 'Logout'; 
+        include 'FrontEnd/views/auth/logout.php';
+        break;
     default:
         include 'FrontEnd/views/components/404.php'; 
         break;

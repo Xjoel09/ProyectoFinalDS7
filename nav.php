@@ -11,6 +11,8 @@
                     <li><a class="barra" href="/ProyectoFinal/catalogo">Catalogo</a></li>
                     <li><a class="barra" href="/ProyectoFinal/contacto">Contact</a></li>
                     <li><a class="barra" href="/ProyectoFinal/cuenta">Account</a></li>
+                    <li><a class="barra" href="/ProyectoFinal/login">Login</a></li>
+                    <li><a class="barra" href="/ProyectoFinal/logout">Logout</a></li>
                     <a href="/ProyectoFinal/carrito"><img src="FrontEnd/assets/img/cart.png" width="50px" height="50px" ></a>
                     
                 </ul>

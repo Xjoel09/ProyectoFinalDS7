@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 /*include 'conexion.php';*/
 
 if(isset($_SESSION['codusuario']) && $_SESSION['nombre'] && $_SESSION['apellido']) {
-    header('Location: index.php');
+    header("Location: /ProyectoFinal/index.php?url=home");
     exit();
 }
 
