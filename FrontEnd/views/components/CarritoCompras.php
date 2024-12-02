@@ -114,3 +114,102 @@ $carrito = $controller->listarCarrito();
     </main>
 </body>
 </html>
+
+<style>
+    /* Estilo global para el body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 0 20px;
+    margin: 0;
+}
+
+/* Estilo para el header */
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* Contenedor principal del carrito */
+.container-cart {
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Mensaje cuando el carrito está vacío */
+.container-cart p {
+    font-size: 1.2rem;
+    color: #e74c3c;
+    text-align: center;
+}
+
+/* Estilo para la lista de productos en el carrito */
+.container-cart ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.container-cart li {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.container-cart li:last-child {
+    border-bottom: none;
+}
+
+/* Títulos de los productos */
+.container-cart h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Precio de cada producto */
+.price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* Descripción del producto */
+.container-cart p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Estilo para el formulario de limpiar carrito */
+form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+form button {
+    padding: 10px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #c0392b;
+}
+
+</style>
