@@ -10,6 +10,13 @@ class ProductoController {
         $this->pdo = $pdo;
     }
 
+    // Listar todos los productos disponibles
+    public function listarProductos() {
+        $stmt = $this->pdo->prepare("SELECT * FROM productos");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Listar productos en el carrito
     public function listarCarrito() {
         return $_SESSION['carrito'] ?? [];
@@ -20,6 +27,20 @@ class ProductoController {
         unset($_SESSION['carrito']); // Elimina el carrito de la sesión
     }
 
+    // Eliminar un producto específico del carrito
+    public function eliminarDelCarrito($id_producto) {
+        if (isset($_SESSION['carrito'])) {
+            foreach ($_SESSION['carrito'] as $index => $item) {
+                if ($item['id_producto'] == $id_producto) {
+                    unset($_SESSION['carrito'][$index]); // Elimina el producto
+                    // Reindexamos el array para evitar índices desordenados
+                    $_SESSION['carrito'] = array_values($_SESSION['carrito']);
+                    break;
+                }
+            }
+        }
+    }
+
     // Agregar un producto al carrito
     public function agregarAlCarrito($id_producto) {
         // Consulta el producto por su id
@@ -28,37 +49,30 @@ class ProductoController {
         $producto = $stmt->fetch();
 
         if ($producto) {
-            // Verificar si el producto ya está en el carrito
-            if (isset($_SESSION['carrito'])) {
-                $existe = false;
-                foreach ($_SESSION['carrito'] as &$item) {
-                    // Compara el id_producto que es único
-                    if ($item['id_producto'] == $producto['id_productos']) {
-                        // Si existe, solo incrementa el precio (no agrega el producto de nuevo)
-                        $item['precio_venta'] += $producto['precio_venta'];
-                        $existe = true;
-                        break;
-                    }
-                }
+            // Verificar si el carrito existe
+            if (!isset($_SESSION['carrito'])) {
+                $_SESSION['carrito'] = [];
+            }
 
-                // Si no existe, lo agregamos al carrito
-                if (!$existe) {
-                    $_SESSION['carrito'][] = [
-                        'id_producto' => $producto['id_productos'],
-                        'nombre_producto' => $producto['nombre_producto'],
-                        'precio_venta' => $producto['precio_venta'],
-                        'descripcion' => $producto['descripcion']
-                    ];
+            $existe = false;
+
+            // Verificar si el producto ya está en el carrito
+            foreach ($_SESSION['carrito'] as &$item) {
+                if ($item['id_producto'] == $producto['id_productos']) {
+                    // Si existe, solo incrementa el precio
+                    $item['precio_venta'] += $producto['precio_venta'];
+                    $existe = true;
+                    break;
                 }
-            } else {
-                // Si no existe el carrito en la sesión, lo creamos con el primer producto
-                $_SESSION['carrito'] = [
-                    [
-                        'id_producto' => $producto['id_productos'],
-                        'nombre_producto' => $producto['nombre_producto'],
-                        'precio_venta' => $producto['precio_venta'],
-                        'descripcion' => $producto['descripcion']
-                    ]
+            }
+
+            // Si no existe, lo agregamos al carrito
+            if (!$existe) {
+                $_SESSION['carrito'][] = [
+                    'id_producto' => $producto['id_productos'],
+                    'nombre_producto' => $producto['nombre_producto'],
+                    'precio_venta' => $producto['precio_venta'],
+                    'descripcion' => $producto['descripcion']
                 ];
             }
         }
