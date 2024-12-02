@@ -25,7 +25,8 @@ $productos = $controller->listarProductos();
     <header>
         <h1>Tienda</h1>
         <nav>
-            <a href="carrito.php">Ver Carrito</a>
+        <a href="/ProyectoFinal/index.php?url=home">Ver carrito</a>
+
         </nav>
     </header>
     <main>

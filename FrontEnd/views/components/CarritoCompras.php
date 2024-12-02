@@ -3,6 +3,7 @@ session_start();
 require_once __DIR__ . '/../../../BackEnd/models/Productos.php';
 require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 
+
 class ProductoController {
     private $pdo;
 
@@ -57,14 +58,16 @@ if (isset($_POST['agregar_producto'])) {
     ];
 
     $controller->agregarProducto($producto);
-    header("Location: carrito.php"); // Redirige al carrito después de agregar el producto
+    header("Location: /ProyectoFinal/index.php?url=home");
+    // Redirige al carrito después de agregar el producto
     exit();
 }
 
 // Limpiar el carrito si el usuario hace clic en el enlace
 if (isset($_POST['limpiar_carrito'])) {
     $controller->limpiarCarrito();
-    header("Location: carrito.php"); // Redirige al carrito después de limpiarlo
+    header("Location: /ProyectoFinal/index.php?url=carrito");
+    // Redirige al carrito después de limpiarlo
     exit();
 }
 
@@ -84,7 +87,8 @@ $carrito = $controller->listarCarrito();
     <header>
         <h1>Carrito de Compras</h1>
         <nav>
-            <a href="home.php">Volver a la Tienda</a>
+        <a href="/ProyectoFinal/index.php?url=carrito">Volver a la Tienda</a>
+
         </nav>
     </header>
     <main>
