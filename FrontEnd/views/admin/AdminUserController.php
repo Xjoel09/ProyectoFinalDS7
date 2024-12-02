@@ -6,16 +6,17 @@ class AdminUserController {
     private PDO $pdo;
 
     public function __construct(PDO $pdo) {
+        
         $this->pdo = $pdo;
         $this->userModel = new UserModel($pdo);
     }
 
     public function handleRequest() {
         // Start session and check admin authentication
-        //session_start();
-        /*if (!$this->isAdminAuthenticated()) {
+        session_start();
+        if (!$this->isAdminAuthenticated()) {
             $this->redirectToLogin();
-        }*/
+        }
 
         $action = $_GET['action'] ?? $_POST['action'] ?? 'list';
 
@@ -86,28 +87,18 @@ class AdminUserController {
     }
 
     public function isAdminAuthenticated() {
-        // Implement your admin authentication logic
-        return true;
-        //return isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+        return isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     }
 
     public function redirectToLogin() {
-        header('Location: login.php');
+        header('Location: http://localhost/ProyectoFinalDS7/FrontEnd/views/auth/login.php');
         exit();
     }
 
     public function redirectWithMessage(bool $result, string $successMessage, string $errorMessage) {
-        /*$_SESSION['message'] = $result ? $successMessage : $errorMessage;
+        $_SESSION['message'] = $result ? $successMessage : $errorMessage;
         $_SESSION['message_type'] = $result ? 'success' : 'error';
-        header('Location: admin-users.php');
-        exit();*/
-        // Construimos la URL con mensajes como parámetros
-    $message = $result ? $successMessage : $errorMessage;
-    $messageType = $result ? 'success' : 'error';
-    $url = 'admin-user-list.php?message=' . urlencode($message) . '&message_type=' . $messageType;
-    
-    // Redirigimos a admin-user-list.php con parámetros
-    header('Location: ' . $url);
-    exit();
+        header('Location: admin-user-list.php');
+        exit();
     }
 }

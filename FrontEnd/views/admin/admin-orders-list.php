@@ -5,7 +5,9 @@ require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 $controller = new AdminOrdersController($pdo);
 $orders = $controller->listOrders();
 ?>
-
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>

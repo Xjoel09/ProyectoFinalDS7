@@ -5,7 +5,9 @@ require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 $controller = new AdminActiveUsersController($pdo);
 $activeUsers = $controller->listActiveUsers();
 ?>
-
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>

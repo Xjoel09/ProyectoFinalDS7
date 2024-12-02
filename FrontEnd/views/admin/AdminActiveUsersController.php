@@ -11,10 +11,10 @@ class AdminActiveUsersController {
     }
 
     public function handleRequest() {
-        /*session_start();
+        session_start();
         if (!$this->isAdminAuthenticated()) {
             $this->redirectToLogin();
-        }*/
+        }
 
         $action = $_GET['action'] ?? 'list';
 
@@ -37,8 +37,7 @@ class AdminActiveUsersController {
         $userId = $_GET['id'] ?? null;
         if ($userId) {
             $orderHistory = $this->activeUsersModel->getUserOrderHistory($userId);
-            return $orderHistory;
-            require 'views/admin/admin-user-order-history.php';
+            require __DIR__. '/admin-user-order-history.php';
         } else {
             // Redirect back to list if no ID provided
             header('Location: admin-active-users.php');
@@ -47,13 +46,11 @@ class AdminActiveUsersController {
     }
 
     private function isAdminAuthenticated() {
-        // Implement your admin authentication logic
-        //return isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
-        return true;
+        return isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     }
 
     private function redirectToLogin() {
-        header('Location: admin-login.php');
+        header('Location: http://localhost/ProyectoFinalDS7/FrontEnd/views/auth/login.php');
         exit();
     }
 }

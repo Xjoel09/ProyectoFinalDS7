@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
-/*include 'conexion.php';*/
 
 if(isset($_SESSION['codusuario']) && $_SESSION['nombre'] && $_SESSION['apellido']) {
     header("Location: /ProyectoFinalDS7/index.php?url=home");
@@ -13,13 +12,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contrasena = str_replace(" ","", $_POST['Contrasena'] ?? '');
 
     try {
-        $stmt = $pdo->prepare("SELECT * FROM [Users] WHERE usuario = :usuario AND contrasena = :contrasena");
+        // Check Admin first
+        $stmt = $pdo->prepare("SELECT * FROM Administrador WHERE usuario = :usuario AND contrasena = :contrasena");
+        $stmt->bindParam(':usuario', $usuario);
+        $stmt->bindParam(':contrasena', $contrasena);
+        $stmt->execute();
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($admin) {
+            $_SESSION['is_admin'] = true;
+            $_SESSION['codusuario'] = $admin['codadmin'];
+            $_SESSION['nombre'] = $admin['nombre'];
+            $_SESSION['apellido'] = $admin['apellido'];
+            header('Location: http://localhost/ProyectoFinalDS7/FrontEnd/views/admin/admin-user-list.php');
+            exit();
+        }
+
+        // If not admin, check regular users
+        $stmt = $pdo->prepare("SELECT * FROM Users WHERE usuario = :usuario AND contrasena = :contrasena");
         $stmt->bindParam(':usuario', $usuario);
         $stmt->bindParam(':contrasena', $contrasena);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($user && $contrasena === $user['contrasena']) {//$user && password_verify($contrasena, $user['contrasena'])
+        if ($user) {
+            $_SESSION['is_admin'] = false;
             $_SESSION['codusuario'] = $user['codusuario'];
             $_SESSION['nombre'] = $user['nombre'];
             $_SESSION['apellido'] = $user['apellido'];
@@ -30,22 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } catch (PDOException $e) {
         echo "<p>Error en la base de datos: " . htmlspecialchars($e->getMessage()) . "</p>";
-    }
-
-    $stmt = $pdo->prepare("SELECT * FROM [Users] WHERE usuario = :usuario AND contrasena = :contrasena");
-    $stmt->bindParam(':usuario', $usuario);
-    $stmt->bindParam(':contrasena', $contrasena);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($user && $contrasena === $user['contrasena']) {//$user && password_verify($contrasena, $user['contrasena'])
-        $_SESSION['codusuario'] = $user['codusuario'];
-        $_SESSION['nombre'] = $user['nombre'];
-        $_SESSION['apellido'] = $user['apellido'];
-        header('Location: /ProyectoFinalDS7/index.php?url=home');
-        exit();
-    } else {
-        echo "Usuario o contraseña incorrectos";
     }
 }
 ?>

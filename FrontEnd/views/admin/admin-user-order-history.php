@@ -1,10 +1,4 @@
-<?php
-include 'AdminActiveUsersController.php';
-require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 
-$controller = new AdminActiveUsersController($pdo);
-$orderHistory = $controller->userOrderHistory();
-?>
 
 <!DOCTYPE html>
 <html>

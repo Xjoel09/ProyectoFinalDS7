@@ -6,9 +6,7 @@ $controller = new AdminUserController($pdo);
 $users = $controller->listUsers();
 ?>
 <?php
-// Capturar mensajes de la URL
-$message = $_GET['message'] ?? null;
-$messageType = $_GET['message_type'] ?? null;
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,12 +31,6 @@ $messageType = $_GET['message_type'] ?? null;
         unset($_SESSION['message']);
         unset($_SESSION['message_type']); 
         ?>
-    <?php endif; ?>
-
-    <?php if ($message): ?>
-        <div class="<?= htmlspecialchars($messageType) ?>">
-            <?= htmlspecialchars($message) ?>
-        </div>
     <?php endif; ?>
 
 
