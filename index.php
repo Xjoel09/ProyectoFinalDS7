@@ -24,7 +24,7 @@ switch ($url) {
       $tituloPagina = 'Cuenta'; 
         include 'FrontEnd/views/components/Cuenta.php';
         break;
-    case 'carrito':
+    case 'Carrito':
       $tituloPagina = 'Carrito De Compras'; 
         include 'FrontEnd/views/components/CarritoCompras.php';
         break;

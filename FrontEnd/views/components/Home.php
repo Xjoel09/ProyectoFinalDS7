@@ -3,10 +3,19 @@ require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 require_once __DIR__ . '/../../../BackEnd/models/Productos.php';
 require_once __DIR__ . '/../../../FrontEnd/views/components/HomeController.php';
 
+session_start();
+
 $controller = new ProductoController($pdo);
 
 // Verifica si se recibe un producto para agregar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_producto'])) {
+/*    if(isset($_SESSION['codusuario']) && $_SESSION['nombre'] && $_SESSION['apellido']) {
+        $controller->agregarAlCarrito($_POST['id_producto']);
+    }else {
+        header('Location: /ProyectoFinal/FrontEnd/views/auth/login.php');
+        exit();
+    }
+*/
     $controller->agregarAlCarrito($_POST['id_producto']);
 }
 

@@ -1,3 +1,55 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
+/*include 'conexion.php';*/
+
+if(isset($_SESSION['codusuario']) && $_SESSION['nombre'] && $_SESSION['apellido']) {
+    header('Location: index.php');
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $usuario = str_replace(" ", "", $_POST['Usuario'] ?? '');
+    $contrasena = str_replace(" ","", $_POST['Contrasena'] ?? '');
+
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM [Users] WHERE usuario = :usuario AND contrasena = :contrasena");
+        $stmt->bindParam(':usuario', $usuario);
+        $stmt->bindParam(':contrasena', $contrasena);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user && $contrasena === $user['contrasena']) {//$user && password_verify($contrasena, $user['contrasena'])
+            $_SESSION['codusuario'] = $user['codusuario'];
+            $_SESSION['nombre'] = $user['nombre'];
+            $_SESSION['apellido'] = $user['apellido'];
+            header('Location: index.php');
+            exit();
+        } else {
+            echo "Usuario o contraseña incorrectos";
+        }
+    } catch (PDOException $e) {
+        echo "<p>Error en la base de datos: " . htmlspecialchars($e->getMessage()) . "</p>";
+    }
+
+    $stmt = $pdo->prepare("SELECT * FROM [Users] WHERE usuario = :usuario AND contrasena = :contrasena");
+    $stmt->bindParam(':usuario', $usuario);
+    $stmt->bindParam(':contrasena', $contrasena);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($user && $contrasena === $user['contrasena']) {//$user && password_verify($contrasena, $user['contrasena'])
+        $_SESSION['codusuario'] = $user['codusuario'];
+        $_SESSION['nombre'] = $user['nombre'];
+        $_SESSION['apellido'] = $user['apellido'];
+        header('Location: index.php');
+        exit();
+    } else {
+        echo "Usuario o contraseña incorrectos";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,30 +158,6 @@
 
 </style>
 <body>
-<?php
-session_start();
-/*include 'conexion.php';*/
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $usuario = $_POST['usuario'];
-    $contrasena = $_POST['contrasena'];
-
-    $stmt = $pdo->prepare("SELECT * FROM user WHERE usuario = :usuario");
-    $stmt->bindParam(':usuario', $usuario);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && $contrasena === $user['contrasena']) {//$user && password_verify($contrasena, $user['contrasena'])
-        $_SESSION['codusuario'] = $user['codusuario'];
-        $_SESSION['nombre'] = $user['nombre'];
-        $_SESSION['apellido'] = $user['apellido'];
-        header('Location: index.php');
-        exit();
-    } else {
-        echo "Usuario o contraseña incorrectos";
-    }
-}
-?>
 <div class="container">
     <h1>Login</h1>
     <form class="form" method="POST" action="">

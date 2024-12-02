@@ -1,3 +1,36 @@
+<?php 
+require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nombre = $_POST['Nombre'];
+        $apellido = $_POST['Apellido'];
+        $direccion = $_POST['Direccion'];
+        $telefono = str_replace(" ", "", $_POST['Telefono']);
+        $usuario = str_replace(" ", "", $_POST['Usuario']);
+        $contrasena = str_replace(" ", "", $_POST['Contrasena']);
+        
+        try {
+            $stmt = $pdo->prepare("INSERT INTO [Users] (nombre, apellido, direccion, telefono, usuario, contrasena) VALUES (:nombre, :apellido, :direccion, :telefono, :usuario, :contrasena)");
+        
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':apellido', $apellido);
+            $stmt->bindParam(':direccion', $direccion);
+            $stmt->bindParam(':telefono', $telefono);
+            $stmt->bindParam(':usuario', $usuario);
+            $stmt->bindParam(':contrasena', $contrasena);
+        
+            if ($stmt->execute()) {
+                header('Location: login.php');
+                exit();
+            } else {
+                echo "<p>Error al registrar el usuario.</p>";
+            }
+        } catch (PDOException $e) {
+            echo "<p>Error en la base de datos: " . htmlspecialchars($e->getMessage()) . "</p>";
+        }
+    }
+?>
+
 <html>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
    <style>
@@ -96,37 +129,37 @@
     background: #9ababa;
     color: #F5f5f5;
 }
-   </style>
+</style>
     <body>
     <div class="container">
             <h1>Register</h1>
-            <form class="form" method="POST" action="">
-            <div class="form-group">
-            <i class="fa-solid fa-user-plus fa-2x"></i>
-                <input type="text" class= "form-control" name="Nombre" placeholder="Nombre" required>
-            </div>
-            <div class="form-group">
-            <i class="fa-solid fa-user-circle fa-2x" aria-hidden="true"></i>
-                <input type="text" class= "form-control" name="Apellido" placeholder="Apellido" required>
-            </div>
-            <div class="form-group">
-                <i class="fa-solid fa-location-arrow fa-2x"></i>
-                <input type="text" class= "form-control" name="Direccion" placeholder="Direccion" required>
-            </div>
-            <div class="form-group">
-                <i class="fa-solid fa-phone fa-2x"></i>
-                <input type="text" class= "form-control" name="Telefono" placeholder="Telefono" required>
-            </div>
-            <div class="form-group">
-            <i class="fa-solid fa-user fa-2x"></i>
-                <input type="text" class= "form-control" name="Usuario" placeholder="Usuario" required>
-            </div>
-            <div class="form-group">
-            <i class="fa-solid fa-lock fa-flip fa-2x"></i>
-                <input type="password" class= "form-control" name="Contrasena" placeholder="Contraseña" required>
-            </div>
-                <button type="submit" class="btn">Crear Usuario</button><br>
-                <a href="login.php" class="btn">¿Ya Tienes Cuenta?</a>
+            <form class="form" method="POST" action="register.php">
+                <div class="form-group">
+                <i class="fa-solid fa-user-plus fa-2x"></i>
+                    <input type="text" class= "form-control" name="Nombre" placeholder="Nombre" required>
+                </div>
+                <div class="form-group">
+                <i class="fa-solid fa-user-circle fa-2x" aria-hidden="true"></i>
+                    <input type="text" class= "form-control" name="Apellido" placeholder="Apellido" required>
+                </div>
+                <div class="form-group">
+                    <i class="fa-solid fa-location-arrow fa-2x"></i>
+                    <input type="text" class= "form-control" name="Direccion" placeholder="Direccion" required>
+                </div>
+                <div class="form-group">
+                    <i class="fa-solid fa-phone fa-2x"></i>
+                    <input type="text" class= "form-control" name="Telefono" placeholder="Telefono" required>
+                </div>
+                <div class="form-group">
+                <i class="fa-solid fa-user fa-2x"></i>
+                    <input type="text" class= "form-control" name="Usuario" placeholder="Usuario" required>
+                </div>
+                <div class="form-group">
+                <i class="fa-solid fa-lock fa-flip fa-2x"></i>
+                    <input type="password" class= "form-control" name="Contrasena" placeholder="Contraseña" required>
+                </div>
+                    <button type="submit" class="btn">Crear Usuario</button><br>
+                    <a href="login.php" class="btn">¿Ya Tienes Cuenta?</a>
             </form>
     
     </div>
