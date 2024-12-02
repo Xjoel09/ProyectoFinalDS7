@@ -27,6 +27,9 @@ class AdminUserController {
             case 'delete':
                 $this->deleteUser();
                 break;
+            case 'logout':
+                $this->logout();
+                break;
             default:
                 $this->listUsers();
         }
@@ -99,6 +102,15 @@ class AdminUserController {
         $_SESSION['message'] = $result ? $successMessage : $errorMessage;
         $_SESSION['message_type'] = $result ? 'success' : 'error';
         header('Location: admin-user-list.php');
+        exit();
+    }
+
+    public function logout() {
+        // Unset all session variables
+        $_SESSION = [];
+
+        // Redirect to login page
+        header('Location: http://localhost/ProyectoFinalDS7/FrontEnd/views/auth/login.php');
         exit();
     }
 }

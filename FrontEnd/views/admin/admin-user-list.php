@@ -23,6 +23,7 @@ session_start();
     <h2>Administración de Usuarios</h2>
     <a href="admin-active-users-list.php">Ir a Usuarios Activos</a>
     <a href="admin-orders-list.php">Ir a Pedidos</a> 
+    <a href="admin-users.php?action=logout" style="margin-left: 10px;">Cerrar Sesión</a> 
     <?php if (isset($_SESSION['message'])): ?>
         <div class="<?= $_SESSION['message_type'] ?>">
             <?= $_SESSION['message'] ?>
