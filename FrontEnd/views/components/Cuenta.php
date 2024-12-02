@@ -1,5 +1,5 @@
 <?php
-ob_start();
+// ob_start();
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -11,30 +11,23 @@ require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 $user = null;
 $error_message = '';
 
-if (!isset($_SESSION['codusuario'])) {
+if (!isset($_SESSION['usuario'])) {
     $error_message = "Para ver los datos de su usuario debe iniciar sesión.";
 } else {
-    try {
-        $controller = new UserController($pdo);
-        $usuarioId = $_SESSION['codusuario'];
-        $userData = $controller->obtenerUsuario($usuarioId);
+    $userData = $_SESSION['usuario'];
 
-        if ($userData) {
-            $user = new User(
-                $userData['usuario'], 
-                $userData['contrasena'], 
-                $userData['nombre'], 
-                $userData['apellido'], 
-                $userData['direccion'], 
-                $userData['telefono'], 
-                $userData['codusuario']
-            );
-        } else {
-            $error_message = "Usuario no encontrado.";
-        }
-    } catch (Exception $e) {
-        $error_message = "Error al cargar los datos del usuario.";
-        error_log("Error: " . $e->getMessage());
+    if ($userData) {
+        $user = new User(
+            $userData['usuario'], 
+            $userData['contrasena'], 
+            $userData['nombre'], 
+            $userData['apellido'], 
+            $userData['direccion'], 
+            $userData['telefono'], 
+            $userData['codusuario']
+        );
+    } else {
+        $error_message = "Usuario no encontrado.";
     }
 }
 ?>
