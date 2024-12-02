@@ -87,8 +87,7 @@ $carrito = $controller->listarCarrito();
     <header>
         <h1>Carrito de Compras</h1>
         <nav>
-        <a href="/ProyectoFinal/index.php?url=carrito">Volver a la Tienda</a>
-
+        <!--<a href="/ProyectoFinal/index.php?url=home">Ir Home</a>-->
         </nav>
     </header>
     <main>

@@ -19,13 +19,15 @@ $productos = $controller->listarProductos();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda</title>
-    <link rel="stylesheet" href="../../assets/css/home.css">
+    <link rel="stylesheet" href="/ProyectoFinal/FrontEnd/assets/css/home.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
     <header>
         <h1>Tienda</h1>
         <nav>
-        <a href="/ProyectoFinal/index.php?url=home">Ver carrito</a>
+        <!--<a href="/ProyectoFinal/index.php?url=carrito">Ver carrito</a>-->
 
         </nav>
     </header>
@@ -33,13 +35,19 @@ $productos = $controller->listarProductos();
         <div class="container-items">
             <?php foreach ($productos as $producto): ?>
                 <div class="item">
+                <img src="/ruta/de/imagen.jpg" alt="Nombre del producto"> <!-- Imagen del producto -->
+                <div class="info-product">
                     <h2><?php echo htmlspecialchars($producto['nombre_producto']); ?></h2>
                     <p><?php echo htmlspecialchars($producto['descripcion']); ?></p>
                     <p class="price">$<?php echo number_format($producto['precio_venta'], 2); ?></p>
                     <form method="POST">
                         <input type="hidden" name="id_producto" value="<?php echo $producto['id_productos']; ?>">
-                        <button type="submit">Añadir al carrito</button>
+                        <button type="submit">
+                            <i class="fas fa-heart" style="color: red; margin-right: 5px;"></i>
+                            Añadir al carrito
+                        </button>
                     </form>
+                </div>
                 </div>
             <?php endforeach; ?>
         </div>
