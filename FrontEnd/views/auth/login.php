@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 /*include 'conexion.php';*/
 
 if(isset($_SESSION['codusuario']) && $_SESSION['nombre'] && $_SESSION['apellido']) {
-    header("Location: /ProyectoFinal/index.php?url=home");
+    header("Location: /ProyectoFinalDS7/index.php?url=home");
     exit();
 }
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['codusuario'] = $user['codusuario'];
             $_SESSION['nombre'] = $user['nombre'];
             $_SESSION['apellido'] = $user['apellido'];
-            header('Location: index.php');
+            header('Location: /ProyectoFinalDS7/index.php?url=home');
             exit();
         } else {
             echo "Usuario o contraseña incorrectos";
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['codusuario'] = $user['codusuario'];
         $_SESSION['nombre'] = $user['nombre'];
         $_SESSION['apellido'] = $user['apellido'];
-        header('Location: index.php');
+        header('Location: /ProyectoFinalDS7/index.php?url=home');
         exit();
     } else {
         echo "Usuario o contraseña incorrectos";

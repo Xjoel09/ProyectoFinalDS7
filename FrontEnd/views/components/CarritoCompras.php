@@ -58,7 +58,7 @@ if (isset($_POST['agregar_producto'])) {
     ];
 
     $controller->agregarProducto($producto);
-    header("Location: /ProyectoFinal/index.php?url=home");
+    header("Location: /ProyectoFinalDS7/index.php?url=home");
     // Redirige al carrito después de agregar el producto
     exit();
 }
@@ -66,7 +66,7 @@ if (isset($_POST['agregar_producto'])) {
 // Limpiar el carrito si el usuario hace clic en el enlace
 if (isset($_POST['limpiar_carrito'])) {
     $controller->limpiarCarrito();
-    header("Location: /ProyectoFinal/index.php?url=carrito");
+    header("Location: /ProyectoFinalDS7/index.php?url=carrito");
     // Redirige al carrito después de limpiarlo
     exit();
 }
