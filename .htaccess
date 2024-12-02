@@ -2,7 +2,7 @@
 RewriteEngine On
 
 # Establecer la base desde la raíz del proyecto
-RewriteBase /ProyectoFinal/
+RewriteBase /ProyectoFinalDS7/
 
 # Permitir acceso directo a archivos existentes
 RewriteCond %{REQUEST_FILENAME} !-f

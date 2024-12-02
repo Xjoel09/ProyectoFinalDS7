@@ -7,13 +7,13 @@
             </div>
             <nav>
                 <ul>
-                    <li><a class="barra" href="/ProyectoFinal/">Home</a></li>
-                    <li><a class="barra" href="/ProyectoFinal/catalogo">Catalogo</a></li>
-                    <li><a class="barra" href="/ProyectoFinal/contacto">Contact</a></li>
-                    <li><a class="barra" href="/ProyectoFinal/cuenta">Account</a></li>
-                    <li><a class="barra" href="/ProyectoFinal/login">Login</a></li>
-                    <li><a class="barra" href="/ProyectoFinal/logout">Logout</a></li>
-                    <a href="/ProyectoFinal/carrito"><img src="FrontEnd/assets/img/cart.png" width="50px" height="50px" ></a>
+                    <li><a class="barra" href="/ProyectoFinalDS7/">Home</a></li>
+                    <li><a class="barra" href="/ProyectoFinalDS7/catalogo">Catalogo</a></li>
+                    <li><a class="barra" href="/ProyectoFinalDS7/contacto">Contact</a></li>
+                    <li><a class="barra" href="/ProyectoFinalDS7/cuenta">Account</a></li>
+                    <li><a class="barra" href="/ProyectoFinalDS7/login">Login</a></li>
+                    <li><a class="barra" href="/ProyectoFinalDS7/logout">Logout</a></li>
+                    <a href="/ProyectoFinalDS7/carrito"><img src="FrontEnd/assets/img/cart.png" width="50px" height="50px" ></a>
                     
                 </ul>
             </nav>
