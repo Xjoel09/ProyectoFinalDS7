@@ -8,7 +8,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-
 $controller = new ProductoController($pdo);
 
 // Verifica si se recibe un producto para agregar al carrito
@@ -44,9 +43,6 @@ $productos = $controller->listarProductos();
 <body>
     <header>
         <h1>Tienda</h1>
-        <nav>
-           
-        </nav>
     </header>
 
     <?php if (isset($mensaje)): ?>
@@ -60,7 +56,6 @@ $productos = $controller->listarProductos();
                     <img src="/ruta/de/imagen.jpg" alt="Nombre del producto">
                     <div class="info-product">
                         <h2><?php echo htmlspecialchars($producto['nombre_producto']); ?></h2>
-                        <p><?php echo htmlspecialchars($producto['descripcion']); ?></p>
                         <p class="price">$<?php echo number_format($producto['precio_venta'], 2); ?></p>
                         <form method="POST">
                             <input type="hidden" name="id_producto" value="<?php echo $producto['id_productos']; ?>">
@@ -68,15 +63,112 @@ $productos = $controller->listarProductos();
                             <input type="number" name="cantidad" id="cantidad-<?php echo $producto['id_productos']; ?>" value="1" min="1">
                             <button type="submit">🛍️ Añadir al carrito</button>
                         </form>
+                        <button class="btn-description" 
+                                data-nombre="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" 
+                                data-precio="<?php echo number_format($producto['precio_venta'], 2); ?>"
+                                data-descripcion="<?php echo htmlspecialchars($producto['descripcion']); ?>"
+                                data-imagen="/ruta/de/imagen.jpg">📖 Ver Descripción</button>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
     </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modal-image" src="" alt="Imagen del Producto" style="width: 100px; height: 100px; object-fit: cover;">
+            <h2 id="modal-nombre"></h2>
+            <p id="modal-precio"></p>
+            <p id="modal-description"></p>
+        </div>
+    </div>
+
+    <script>
+        // Manejo del modal
+        const modal = document.getElementById('modal');
+        const modalDescription = document.getElementById('modal-description');
+        const modalNombre = document.getElementById('modal-nombre');
+        const modalPrecio = document.getElementById('modal-precio');
+        const modalImage = document.getElementById('modal-image');
+        const closeModal = document.querySelector('.close-btn');
+
+        // Muestra la descripción del producto
+        document.querySelectorAll('.btn-description').forEach(button => {
+            button.addEventListener('click', () => {
+                const nombre = button.getAttribute('data-nombre');
+                const precio = button.getAttribute('data-precio');
+                const descripcion = button.getAttribute('data-descripcion');
+                const imagen = button.getAttribute('data-imagen');
+
+                modalNombre.textContent = nombre;
+                modalPrecio.textContent = '$' + precio;
+                modalDescription.textContent = descripcion;
+                modalImage.src = imagen;
+
+                modal.style.display = 'block';
+            });
+        });
+
+        // Cierra el modal al hacer clic en la "x"
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Cierra el modal al hacer clic fuera del contenido
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
 
+
 <style>
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .close-btn:hover, .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
         /* Estilo para los botones de acción */
         .actions {
             display: flex;

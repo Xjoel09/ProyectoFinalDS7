@@ -42,7 +42,7 @@ class ProductoController {
     }
 
     // Agregar un producto al carrito
-    public function agregarAlCarrito($id_producto) {
+    public function agregarAlCarrito($id_producto, $cantidad) {
         // Consulta el producto por su id
         $stmt = $this->pdo->prepare("SELECT * FROM productos WHERE id_productos = ?");
         $stmt->execute([$id_producto]);
@@ -59,22 +59,101 @@ class ProductoController {
             // Verificar si el producto ya está en el carrito
             foreach ($_SESSION['carrito'] as &$item) {
                 if ($item['id_producto'] == $producto['id_productos']) {
-                    // Si existe, solo incrementa el precio
-                    $item['precio_venta'] += $producto['precio_venta'];
+                    // Si el producto ya está en el carrito, incrementa la cantidad y el precio total
+                    $item['cantidad'] += $cantidad;
+                    $item['precio_venta'] += $producto['precio_venta'] * $cantidad;
                     $existe = true;
                     break;
                 }
             }
 
-            // Si no existe, lo agregamos al carrito
+            // Si no existe en el carrito, agregarlo como nuevo
             if (!$existe) {
                 $_SESSION['carrito'][] = [
                     'id_producto' => $producto['id_productos'],
                     'nombre_producto' => $producto['nombre_producto'],
-                    'precio_venta' => $producto['precio_venta'],
-                    'descripcion' => $producto['descripcion']
+                    'precio_venta' => $producto['precio_venta'] * $cantidad,
+                    'descripcion' => $producto['descripcion'],
+                    'cantidad' => $cantidad
                 ];
             }
         }
     }
+
+    // Actualizar la cantidad de un producto en el carrito
+    public function actualizarCantidadCarrito($id_producto, $nueva_cantidad) {
+        if (isset($_SESSION['carrito'])) {
+            foreach ($_SESSION['carrito'] as &$item) {
+                if ($item['id_producto'] == $id_producto) {
+                    // Actualiza la cantidad y recalcula el precio total del producto
+                    $item['cantidad'] = $nueva_cantidad;
+                    $item['precio_venta'] = $item['precio_venta'] / $item['cantidad'] * $nueva_cantidad;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Calcular el precio total del carrito
+    public function calcularTotalCarrito() {
+        $total = 0;
+        if (isset($_SESSION['carrito'])) {
+            foreach ($_SESSION['carrito'] as $item) {
+                $total += $item['precio_venta'];
+            }
+        }
+        return $total;
+    }
+
+    // Verificar disponibilidad del producto antes de agregar al carrito
+    public function verificarDisponibilidad($id_producto, $cantidad) {
+        $stmt = $this->pdo->prepare("SELECT stock FROM productos WHERE id_productos = ?");
+        $stmt->execute([$id_producto]);
+        $producto = $stmt->fetch();
+
+        if ($producto && $producto['stock'] >= $cantidad) {
+            return true; // Hay suficiente stock
+        }
+
+        return false; // No hay stock suficiente
+    }
+
+    // Generar un pedido (vacía el carrito y guarda la compra)
+    public function generarPedido($id_usuario) {
+        if (isset($_SESSION['carrito']) && !empty($_SESSION['carrito'])) {
+            $this->pdo->beginTransaction();
+
+            try {
+                // Insertar el pedido en la tabla de pedidos
+                $stmt = $this->pdo->prepare("INSERT INTO pedidos (id_usuario, fecha_pedido, total) VALUES (?, NOW(), ?)");
+                $total = $this->calcularTotalCarrito();
+                $stmt->execute([$id_usuario, $total]);
+                $id_pedido = $this->pdo->lastInsertId();
+
+                // Insertar los detalles del pedido
+                foreach ($_SESSION['carrito'] as $item) {
+                    $stmt = $this->pdo->prepare(
+                        "INSERT INTO detalles_pedido (id_pedido, id_producto, cantidad, precio) VALUES (?, ?, ?, ?)"
+                    );
+                    $stmt->execute([$id_pedido, $item['id_producto'], $item['cantidad'], $item['precio_venta']]);
+
+                    // Actualizar el stock del producto
+                    $stmt = $this->pdo->prepare("UPDATE productos SET stock = stock - ? WHERE id_productos = ?");
+                    $stmt->execute([$item['cantidad'], $item['id_producto']]);
+                }
+
+                // Limpiar el carrito después de generar el pedido
+                $this->limpiarCarrito();
+
+                $this->pdo->commit();
+                return $id_pedido; // Retornar el ID del pedido generado
+            } catch (Exception $e) {
+                $this->pdo->rollBack();
+                throw $e;
+            }
+        }
+
+        return null; // Retorna null si el carrito está vacío
+    }
 }
+

@@ -3,6 +3,9 @@ session_start();
 require_once __DIR__ . '/../../../BackEnd/models/Productos.php';
 require_once __DIR__ . '/../../../BackEnd/config/conexion.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 class ProductoController {
     private $pdo;
