@@ -1,10 +1,11 @@
 <?php
 session_start();
-require_once '../../BackEnd/models/user.php';
-require_once '../../BackEnd/config/conexion.php';
+require_once __DIR__ . '../../../../BackEnd/models/user.php';
+require_once __DIR__ .'../../../../FrontEnd/views/components/Cuenta.php';
+require_once __DIR__ . '../../../../BackEnd/config/conexion.php';
 
 
-$pdo = new PDO("mysql:host=localhost;dbname=nombre_de_la_base_de_datos", "tu_usuario", "tu_contraseña");
+$pdo = new PDO("sqlsrv:server=$server;Database=$database", $username, $password);
 
 // Obtener el codusuario del usuario actual
 $usuarioId = $_SESSION['codusuario'];
